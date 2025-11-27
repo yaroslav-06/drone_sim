@@ -1,0 +1,132 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2fw80816c22l"]
+
+[ext_resource type="Script" uid="uid://o17o48t4xytm" path="res://control.gd" id="1_62e2m"]
+[ext_resource type="Script" uid="uid://cdcrv62q6j5i6" path="res://phone_controller.gd" id="2_qtu10"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_qtu10"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_62e2m")
+
+[node name="Throttle" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchor_top = 0.0200617
+anchor_bottom = 0.0200617
+offset_right = 165.0
+offset_bottom = 208.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Throttle"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -31.5
+offset_top = -49.0
+offset_right = 31.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "Throttle
+"
+
+[node name="VSlider" type="VSlider" parent="Throttle"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -14.5
+offset_right = 14.5
+offset_bottom = 144.0
+grow_horizontal = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+scrollable = false
+
+[node name="Yaw" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchor_top = 0.0200617
+anchor_bottom = 0.0200617
+offset_left = 69.0
+offset_top = 0.172841
+offset_right = 234.0
+offset_bottom = 208.173
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Yaw"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -31.5
+offset_top = -49.0
+offset_right = 31.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "Yaw
+"
+horizontal_alignment = 1
+
+[node name="VSlider" type="VSlider" parent="Yaw"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -14.5
+offset_right = 14.5
+offset_bottom = 144.0
+grow_horizontal = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+scrollable = false
+
+[node name="PhoneController" type="Node" parent="."]
+script = ExtResource("2_qtu10")
+
+[node name="LJoystick" parent="." instance=ExtResource("3_qtu10")]
+layout_mode = 1
+offset_left = 2.0
+offset_top = -1390.0
+offset_right = 344.0
+offset_bottom = -1045.0
+scale = Vector2(4, 4)
+deadzone_size = 2.0
+clampzone_size = 500.0
+action_left = "yaw_ccw"
+action_right = "yaw_cw"
+action_up = "throttle_up"
+action_down = "throttle_down"
+
+[node name="RJoystick" parent="." instance=ExtResource("3_qtu10")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1370.0
+offset_top = -1372.0
+offset_right = -1028.0
+offset_bottom = -1029.0
+grow_horizontal = 0
+scale = Vector2(4, 4)
+clampzone_size = 500.0
+action_left = "roll_left"
+action_right = "roll_right"
+action_up = "pitch_down"
+action_down = "pitch_up"
+
+[connection signal="ready" from="PhoneController" to="." method="_on_phone_controller_ready"]
+[connection signal="set_controls" from="PhoneController" to="." method="_on_phone_controller_set_controls"]

@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://bw8qkftnhlt3l"]
+
+[ext_resource type="PackedScene" uid="uid://bogl6uwi7vwfv" path="res://drone.tscn" id="1_u52ul"]
+[ext_resource type="PackedScene" uid="uid://byldf8h4j2qmc" path="res://royal_raceway.tscn" id="3_oi3di"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5xgho"]
+absorbent = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u52ul"]
+size = Vector3(10000, 5, 10000)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_u52ul"]
+noise_type = 4
+seed = 1
+frequency = 1.0
+fractal_octaves = 1
+fractal_lacunarity = 1.0
+fractal_gain = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vonw3"]
+width = 1000
+height = 1000
+seamless_blend_skirt = 0.123
+bump_strength = 0.0
+noise = SubResource("FastNoiseLite_u52ul")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oi3di"]
+albedo_color = Color(0.160784, 0.160784, 0.341176, 1)
+albedo_texture = SubResource("NoiseTexture2D_vonw3")
+
+[sub_resource type="BoxMesh" id="BoxMesh_0b4ue"]
+material = SubResource("StandardMaterial3D_oi3di")
+size = Vector3(500, 0.1, 500)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u52ul"]
+size = Vector3(5, 40, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vonw3"]
+size = Vector3(5, 40, 5)
+
+[node name="Level" type="Node"]
+
+[node name="Ground" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+physics_material_override = SubResource("PhysicsMaterial_5xgho")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.38871, 0)
+shape = SubResource("BoxShape3D_u52ul")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground/StaticBody3D"]
+mesh = SubResource("BoxMesh_0b4ue")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -98.9088, 0, -132.683)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground/StaticBody3D2"]
+mesh = SubResource("BoxMesh_u52ul")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D2"]
+shape = SubResource("BoxShape3D_vonw3")
+
+[node name="Drone" parent="." instance=ExtResource("1_u52ul")]
+transform = Transform3D(0.997396, -0.0721241, 0, 0.0721241, 0.997396, 0, 0, 0, 1, -2.36696, 9.07592, 10.1)
+
+[node name="Light" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.0384401, 0.999261, 0, -0.999261, -0.0384401, 0, 115.943, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.88643, 0.462863, 0, -0.462863, 0.88643, -1.90735e-06, 6.12419, 15.2891)
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("3_oi3di")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 7.89902, 0)

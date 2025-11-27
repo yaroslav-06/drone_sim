@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://bogl6uwi7vwfv"]
+
+[ext_resource type="Script" uid="uid://cwbymr3y7fad8" path="res://drone/drone.gd" id="1_d5du7"]
+[ext_resource type="PackedScene" uid="uid://ca5vvuv4pyvgx" path="res://art/drone.glb" id="1_uvgqj"]
+[ext_resource type="PackedScene" uid="uid://bia0j03j6s2j2" path="res://art/prop.glb" id="3_30i2v"]
+[ext_resource type="PackedScene" uid="uid://b2fw80816c22l" path="res://control.tscn" id="3_puw62"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_30i2v"]
+friction = 0.91
+rough = true
+bounce = 0.13
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uvgqj"]
+size = Vector3(6.954, 5.17774, 8.404)
+
+[node name="Drone" type="RigidBody3D" node_paths=PackedStringArray("controller")]
+physics_material_override = SubResource("PhysicsMaterial_30i2v")
+center_of_mass_mode = 1
+inertia = Vector3(1, 0, 1)
+script = ExtResource("1_d5du7")
+controller = NodePath("Control")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0, -0.037364, -0.117547)
+current = true
+fov = 90.1
+
+[node name="Body" parent="." instance=ExtResource("1_uvgqj")]
+transform = Transform3D(0.006, 0, 0, 0, 0.006, 0, 0, 0, 0.006, 0, 0, 0)
+
+[node name="RT" parent="Body" instance=ExtResource("3_30i2v")]
+transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 24.8312, 2.54248, 29.7374)
+metadata/cw = true
+
+[node name="LT" parent="Body" instance=ExtResource("3_30i2v")]
+transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, -24.831, 2.561, 29.737)
+metadata/cw = false
+
+[node name="RB" parent="Body" instance=ExtResource("3_30i2v")]
+transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 25.0053, 2.49591, -29.7573)
+metadata/cw = false
+
+[node name="LB" parent="Body" instance=ExtResource("3_30i2v")]
+transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, -24.831, 2.561, -29.737)
+metadata/cw = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0.00145406, 0.0935879, 0.000751972)
+shape = SubResource("BoxShape3D_uvgqj")
+
+[node name="Control" parent="." instance=ExtResource("3_puw62")]
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.982071, 0.188513, 0, -0.188513, 0.982071, -1.19209e-07, 0.26251, 0.548273)
